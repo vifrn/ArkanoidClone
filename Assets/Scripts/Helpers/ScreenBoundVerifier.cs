@@ -6,25 +6,29 @@ using UnityEngine;
 public class ScreenBoundVerifier
 {
 
-    public static Vector2 HasReachedBorder(Camera camera, Vector3 position)
+    public static Vector2 HasReachedBorder(Camera camera, Vector3 position) {
+        return HasReachedBorder(camera, position, 0);
+    }
+
+    public static Vector2 HasReachedBorder(Camera camera, Vector3 position, float borderSize)
     {
         Vector2 screenPos = camera.WorldToScreenPoint(position);
 
-        if (screenPos.x < 0) {
+        if (screenPos.x < borderSize) {
             return Vector2.right;
         }
 
-        if (screenPos.x > camera.pixelWidth)
+        if (screenPos.x > camera.pixelWidth - borderSize)
         {
             return Vector2.left;
         }
 
-        if (screenPos.y < 0)
+        if (screenPos.y < borderSize)
         {
             return Vector2.up;
         }
 
-        if (screenPos.y > camera.pixelHeight)
+        if (screenPos.y > camera.pixelHeight - borderSize)
         {
             return Vector2.down;
         }

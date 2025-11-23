@@ -28,4 +28,11 @@ public class Ball : MonoBehaviour
 
         transform.position += new Vector3(randDirectionX * speed, randDirectionY * speed, 0) * Time.deltaTime;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player") {
+            randDirectionY *= -1;
+        }
+    }
 }
