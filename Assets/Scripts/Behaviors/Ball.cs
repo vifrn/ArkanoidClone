@@ -23,15 +23,22 @@ public class Ball : MonoBehaviour
     {
         Vector2 hitScreenBorder = ScreenBoundVerifier.HasReachedBorder(mainCamera, transform.position);
 
-        if (hitScreenBorder.x != 0) randDirectionX *= -1;
-        if (hitScreenBorder.y != 0) randDirectionY *= -1;
+        if (hitScreenBorder.x < 0 && randDirectionX > 0) randDirectionX *= -1;
+        if (hitScreenBorder.x > 0 && randDirectionX < 0) randDirectionX *= -1;
+        if (hitScreenBorder.y < 0 && randDirectionY > 0) randDirectionY *= -1;
+        if (hitScreenBorder.y > 0 && randDirectionY < 0) randDirectionY *= -1;
 
-        transform.position += new Vector3(randDirectionX * speed, randDirectionY * speed, 0) * Time.deltaTime;
+        transform.position += new Vector3(randDirectionX, randDirectionY, 0) * speed * Time.deltaTime;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player") {
+        if (collision.gameObject.tag == Constants.TAG_PLAYER) {
+            randDirectionY *= -1;
+        }
+
+        if (collision.gameObject.tag == Constants.TAG_BRICK) {
+            Debug.Log("Hit a brick!! Score!");
             randDirectionY *= -1;
         }
     }

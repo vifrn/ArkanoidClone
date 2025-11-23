@@ -7,7 +7,7 @@ public class ScreenBoundVerifier
 {
 
     public static Vector2 HasReachedBorder(Camera camera, Vector3 position) {
-        return HasReachedBorder(camera, position, 0);
+        return HasReachedBorder(camera, position, 10);
     }
 
     public static Vector2 HasReachedBorder(Camera camera, Vector3 position, float borderSize)
