@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,5 +52,16 @@ public class BrickSpawner : MonoBehaviour
             }
         }
 
+    }
+
+    public void DoDamage(GameObject brick) 
+    {
+        brick.SetActive(false);
+        bricks.Remove(brick);
+    }
+
+    public Boolean HasAnyBrickLeft()
+    {
+        return bricks.Count > 0;
     }
 }

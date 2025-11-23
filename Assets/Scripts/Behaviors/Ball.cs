@@ -11,11 +11,15 @@ public class Ball : MonoBehaviour
     private float randDirectionX = 1;
     private float randDirectionY = 1;
 
+    private GameManager gameManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         randDirectionX = Random.value;
-        randDirectionY = Random.value;
+        randDirectionY = (Random.value / 3);
+
+        gameManager = GameManager.GetInstance();
     }
 
     // Update is called once per frame
@@ -26,7 +30,12 @@ public class Ball : MonoBehaviour
         if (hitScreenBorder.x < 0 && randDirectionX > 0) randDirectionX *= -1;
         if (hitScreenBorder.x > 0 && randDirectionX < 0) randDirectionX *= -1;
         if (hitScreenBorder.y < 0 && randDirectionY > 0) randDirectionY *= -1;
-        if (hitScreenBorder.y > 0 && randDirectionY < 0) randDirectionY *= -1;
+        if (hitScreenBorder.y > 0) 
+        {
+            gameManager.OutOfBounds();
+            transform.position = Vector2.zero;
+            randDirectionY *= -1;
+        } 
 
         transform.position += new Vector3(randDirectionX, randDirectionY, 0) * speed * Time.deltaTime;
     }
@@ -38,8 +47,21 @@ public class Ball : MonoBehaviour
         }
 
         if (collision.gameObject.tag == Constants.TAG_BRICK) {
-            Debug.Log("Hit a brick!! Score!");
-            randDirectionY *= -1;
+
+            foreach (ContactPoint2D contact in collision.contacts) 
+            {
+                Vector2 localNormal = transform.InverseTransformDirection(contact.normal);
+
+                if (localNormal.y > 0.5f || localNormal.y < -0.5f)
+                {
+                    randDirectionY *= -1;
+                }
+                if (localNormal.x > 0.5f || localNormal.x < -0.5f) { 
+                    randDirectionX *= -1;
+                }
+            }
+            gameManager.Score(collision.gameObject);
         }
+        speed += 0.2f;
     }
 }
