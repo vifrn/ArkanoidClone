@@ -15,7 +15,6 @@ public class BrickSpawner : MonoBehaviour
     private const int MAX_ROW = 15;
     private float brickWidth;
     private float brickHeight;
-    private float brickOffset = 0.05f;
 
 
     private void Awake()
@@ -39,10 +38,10 @@ public class BrickSpawner : MonoBehaviour
         int row = 0;
         foreach (var brick in bricks)
         {
-            brick.transform.localScale = new Vector3(brickWidth - brickOffset, brick.transform.localScale.y - brickOffset, brick.transform.localScale.z);
+            brick.transform.localScale = new Vector3(brickWidth, brick.transform.localScale.y, brick.transform.localScale.z);
             brick.transform.position = new Vector2(
                 transform.position.x + brickWidth / 2 + counter * brickWidth,
-                transform.position.y - brickHeight / 2 - row * brickHeight);
+                transform.position.y - row * brickHeight);
 
             counter++;
             if (counter >= MAX_ROW)
